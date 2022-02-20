@@ -116,14 +116,14 @@ class GameState {
         this.kingPos = kingPos;
         this.knightPositions = knightPositions;
     }
-    getScore() {
+    getScore(depth = 0) {
         for (let z of this.knightPositions) {
             if (Board.samePosition(z, this.kingPos)) {
-                return [-100, true];
+                return [(-100 + depth), true];
             }
         }
         if (this.kingPos[1] == 0) {
-            return [100, true];
+            return [(100 - depth), true];
         }
         return [0, false];
     }
