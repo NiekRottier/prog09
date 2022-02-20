@@ -31,13 +31,17 @@ class GameAI {
 
             knights[i].getMoves().forEach(move => {
                 // Copy the gameState
-                let gameStateCopy:GameState = gameState.copy()
+                // let gameStateCopy:GameState = gameState.copy()
+
+                let oldKnightPos = gameState.knightPositions[i]
 
                 // Move the knight in the copied gameState
-                gameStateCopy.knightPositions[i] = move
+                gameState.knightPositions[i] = move
 
                 // Get the score of the above gameState
-                let moveScore:number = this.minimax(gameStateCopy, king, knights, 0, true)
+                let moveScore:number = this.minimax(gameState, king, knights, 0, true)
+
+                gameState.knightPositions[i] = oldKnightPos
 
                 // console.log(moveScore);
 
@@ -54,17 +58,17 @@ class GameAI {
         return bestMove
     }
 
-    static minimax(gameStateCopy:GameState, king:King, knights:Knight[], depth:number, isMaxi:boolean):number{
-        let score:[number, boolean] = gameStateCopy.getScore()
+    static minimax(gameState:GameState, king:King, knights:Knight[], depth:number, isMaxi:boolean):number{
+        let score:[number, boolean] = gameState.getScore()
 
         // If someone won or the depth is finished
         if (score[0] === 100) {
             // console.log('King can win with this move: ' +gameStateCopy.kingPos)
-            return 100
+            return 100-depth
         } else if (score[0] === -100) {
             // console.log('Knights can win with this move: ' +gameStateCopy.knightPositions)
-            return -100
-        } else if (depth > 4) {     // Determines how deep the algorithm goes
+            return -100+depth
+        } else if (depth > 5) {     // Determines how deep the algorithm goes
             return 0
         }
 
@@ -73,30 +77,39 @@ class GameAI {
             let bestScore = -Infinity
 
             // For each of the possible moves of the king in the gameStateCopy make it and retrieve the score of it
-            king.getMoves(gameStateCopy.kingPos).forEach(kingMove => {
-                gameStateCopy.kingPos = kingMove
+            king.getMoves(gameState.kingPos).forEach(kingMove => {
+                let oldKingPos = gameState.kingPos
+
+                gameState.kingPos = kingMove
 
                 // Put the highest score in bestScore
-                bestScore = Math.max(bestScore, this.minimax(gameStateCopy, king, knights, depth+1, !isMaxi)) 
+                bestScore = Math.max(bestScore, this.minimax(gameState, king, knights, depth+1, !isMaxi)) 
+
+                // Reset move
+                gameState.kingPos = oldKingPos
             });
 
             // console.log('isMaxi | Depth: '+depth+' | Score: '+bestScore);
-            return bestScore - depth
+            return bestScore
         } else {
             let bestScore = +Infinity
 
             // For each of the possible moves of the knights in the gameStateCopy make it and retrieve the score of it
             for (let i = 0; i < knights.length; i++) {
-                knights[i].getMoves(gameStateCopy.knightPositions[i]).forEach(knightMove => {
-                    gameStateCopy.knightPositions[i] = knightMove
+                knights[i].getMoves(gameState.knightPositions[i]).forEach(knightMove => {
+                    let oldKnightPos = gameState.knightPositions[i]
+
+                    gameState.knightPositions[i] = knightMove
 
                     // Put the lowest score in bestScore
-                    bestScore = Math.min(bestScore, this.minimax(gameStateCopy, king, knights, depth+1, !isMaxi))
+                    bestScore = Math.min(bestScore, this.minimax(gameState, king, knights, depth+1, !isMaxi))
+
+                    gameState.knightPositions[i] = oldKnightPos
                 });
             }
 
             // console.log('isNotMaxi | Depth: '+depth+' | Score: '+bestScore);
-            return bestScore + depth
+            return bestScore
         }
     }
 }

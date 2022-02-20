@@ -246,9 +246,10 @@ class GameAI {
         for (let i = 0; i < knights.length; i++) {
             console.log('Knight nr. ' + (i + 1));
             knights[i].getMoves().forEach(move => {
-                let gameStateCopy = gameState.copy();
-                gameStateCopy.knightPositions[i] = move;
-                let moveScore = this.minimax(gameStateCopy, king, knights, 0, true);
+                let oldKnightPos = gameState.knightPositions[i];
+                gameState.knightPositions[i] = move;
+                let moveScore = this.minimax(gameState, king, knights, 0, true);
+                gameState.knightPositions[i] = oldKnightPos;
                 if (moveScore < bestScore) {
                     bestMove = [i, move];
                     bestScore = moveScore;
@@ -258,34 +259,38 @@ class GameAI {
         console.log(bestScore);
         return bestMove;
     }
-    static minimax(gameStateCopy, king, knights, depth, isMaxi) {
-        let score = gameStateCopy.getScore();
+    static minimax(gameState, king, knights, depth, isMaxi) {
+        let score = gameState.getScore();
         if (score[0] === 100) {
-            return 100;
+            return 100 - depth;
         }
         else if (score[0] === -100) {
-            return -100;
+            return -100 + depth;
         }
-        else if (depth > 4) {
+        else if (depth > 5) {
             return 0;
         }
         if (isMaxi) {
             let bestScore = -Infinity;
-            king.getMoves(gameStateCopy.kingPos).forEach(kingMove => {
-                gameStateCopy.kingPos = kingMove;
-                bestScore = Math.max(bestScore, this.minimax(gameStateCopy, king, knights, depth + 1, !isMaxi));
+            king.getMoves(gameState.kingPos).forEach(kingMove => {
+                let oldKingPos = gameState.kingPos;
+                gameState.kingPos = kingMove;
+                bestScore = Math.max(bestScore, this.minimax(gameState, king, knights, depth + 1, !isMaxi));
+                gameState.kingPos = oldKingPos;
             });
-            return bestScore - depth;
+            return bestScore;
         }
         else {
             let bestScore = +Infinity;
             for (let i = 0; i < knights.length; i++) {
-                knights[i].getMoves(gameStateCopy.knightPositions[i]).forEach(knightMove => {
-                    gameStateCopy.knightPositions[i] = knightMove;
-                    bestScore = Math.min(bestScore, this.minimax(gameStateCopy, king, knights, depth + 1, !isMaxi));
+                knights[i].getMoves(gameState.knightPositions[i]).forEach(knightMove => {
+                    let oldKnightPos = gameState.knightPositions[i];
+                    gameState.knightPositions[i] = knightMove;
+                    bestScore = Math.min(bestScore, this.minimax(gameState, king, knights, depth + 1, !isMaxi));
+                    gameState.knightPositions[i] = oldKnightPos;
                 });
             }
-            return bestScore + depth;
+            return bestScore;
         }
     }
 }
