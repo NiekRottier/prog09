@@ -65,7 +65,6 @@ class Game {
             if (go.moving) {
                 moving = true;
             }
-
         }
 
         // only respond to input during player turn when no knights are moving, and not game over
@@ -84,6 +83,12 @@ class Game {
                     // check win
                     if (this.gameState.getScore()[1]) {
                         this.gameOver = true;
+                        
+                        if (this.gameState.getScore()[0] === 100) {
+                            console.log('KING WINS')
+                        } else if (this.gameState.getScore()[0] === -100) {
+                            console.log('KNIGHTS WIN')
+                        }
                     }
                 }
             }
