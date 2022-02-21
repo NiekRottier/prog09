@@ -30,8 +30,6 @@ class GameAI {
             console.log('Knight nr. ' + (i+1));
 
             knights[i].getMoves().forEach(move => {
-                // Copy the gameState
-                // let gameStateCopy:GameState = gameState.copy()
 
                 let oldKnightPos = gameState.knightPositions[i]
 
@@ -42,8 +40,6 @@ class GameAI {
                 let moveScore:number = this.minimax(gameState, king, knights, 0, true)
 
                 gameState.knightPositions[i] = oldKnightPos
-
-                // console.log(moveScore);
 
                 // If the score of this move is higher than previous moves update bestMove & bestScore
                 if (moveScore < bestScore) {
@@ -59,16 +55,12 @@ class GameAI {
     }
 
     static minimax(gameState:GameState, king:King, knights:Knight[], depth:number, isMaxi:boolean):number{
-        let score:[number, boolean] = gameState.getScore()
+        let score:[number, boolean] = gameState.getScore(depth)
 
         // If someone won or the depth is finished
-        if (score[0] === 100) {
-            // console.log('King can win with this move: ' +gameStateCopy.kingPos)
-            return 100-depth
-        } else if (score[0] === -100) {
-            // console.log('Knights can win with this move: ' +gameStateCopy.knightPositions)
-            return -100+depth
-        } else if (depth > 5) {     // Determines how deep the algorithm goes
+        if (score[1]) {
+            return score[0]
+        } else if (depth > 3) {     // Determines how deep the algorithm goes
             return 0
         }
 
@@ -89,7 +81,6 @@ class GameAI {
                 gameState.kingPos = oldKingPos
             });
 
-            // console.log('isMaxi | Depth: '+depth+' | Score: '+bestScore);
             return bestScore
         } else {
             let bestScore = +Infinity
@@ -108,7 +99,6 @@ class GameAI {
                 });
             }
 
-            // console.log('isNotMaxi | Depth: '+depth+' | Score: '+bestScore);
             return bestScore
         }
     }
