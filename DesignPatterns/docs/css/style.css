@@ -1,0 +1,140 @@
+body {
+  background-image: url("../images/grass.png");
+  background-repeat: repeat;
+  overflow: hidden;
+}
+
+game {
+  display: block;
+  /* width: 1000px;
+    height: 600px; */
+  margin: auto;
+}
+
+game * {
+  position: absolute;
+  display: block;
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+  background-repeat: no-repeat;
+}
+
+tank-body {
+  display: block;
+  position: absolute;
+  overflow: hidden;
+  background-size: contain;
+  background-repeat: no-repeat;
+
+  width: 60px;
+  height: 51px;
+  background-image: url("../images/tank_0.png");
+}
+tank-turret {
+  /* display:block;
+    position: absolute; */
+  background-repeat: no-repeat;
+  background-position: center;
+
+  background-image: url("../images/turret_0.png");
+  background-size: 40px 30px;
+  background-position-x: 20px;
+  width: 60px;
+  height: 51px;
+}
+
+bullet {
+  /* display:block;
+    position: absolute; */
+  width: 24px;
+  height: 6px;
+  background-image: url("../images/bullet.png");
+}
+
+rocket {
+  /* display:block;
+    position: absolute; */
+  width: 34px;
+  height: 13px;
+  background-image: url("../images/rocket.png");
+  background-size: contain;
+}
+missile {
+  /* display:block;
+    position: absolute; */
+  width: 47px;
+  height: 13px;
+  background-image: url("../images/missile.png");
+  background-size: contain;
+}
+
+enemy-light {
+  /* display:block;
+    position: absolute; */
+  width: 85px;
+  height: 72px;
+  background-image: url("../images/enemy1.png");
+  background-size: contain;
+}
+enemy-medium {
+  /* display:block;
+    position: absolute; */
+  width: 85px;
+  height: 72px;
+  background-image: url("../images/enemy2.png");
+  background-size: contain;
+}
+enemy-heavy {
+  /* display:block;
+    position: absolute; */
+  width: 85px;
+  height: 72px;
+  background-image: url("../images/enemy3.png");
+  background-size: contain;
+}
+/* ammo-bullet,
+ammo-rocket,
+ammo-missile {
+  width: 38px;
+  height: 32px;
+  background-size: contain;
+  background-repeat: no-repeat;
+} */
+ammo-bullet {
+  width: 32px;
+  height: 38px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url("../images/ammobox1.png");
+}
+ammo-rocket {
+  width: 42px;
+  height: 54px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url("../images/ammobox2.png");
+}
+ammo-missile {
+  width: 24px;
+  height: 58px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url("../images/ammobox3.png");
+}
+
+/* ammo,
+repair {
+  display: block;
+  position: absolute;
+  overflow: hidden;
+  left: 0;
+  top: 0;
+  width: 38px;
+  height: 32px;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+ammo {
+  background-image: url("./images/ammobox.png");
+} */

@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+        "sourceMap":  false,
+        "removeComments": true,
+        "target":"es6",
+        "noImplicitAny": true,
+        "noImplicitReturns": true,
+        "outDir": "./docs/js/"
+    },
+    "include": [
+        "**/*", 
+        "../game.ts"    
+    ]
+}
