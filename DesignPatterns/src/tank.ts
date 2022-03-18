@@ -24,7 +24,7 @@ export class Tank extends GameObject{
     
     protected speed         : Vector    = new Vector(0, 0)
 
-    public ammoType         : String    = 'bullet-ammo'
+    public ammoType         : String    = 'ammo-bullet'
 
     // Properties
     public get Speed()  : Vector { return this.speed }
@@ -72,15 +72,25 @@ export class Tank extends GameObject{
         
         // Shooting
         if(this.canFire && !this.previousState) {
+            let projectile
+
             if(this.ammoType === 'ammo-bullet'){
-                this.fire(new Bullet(this))
+                projectile = new Bullet(this)
             } else if(this.ammoType === 'ammo-missile'){
-                this.fire(new Missile(this))
+                projectile = new Missile(this)
             } else if(this.ammoType === 'ammo-rocket'){
-                this.fire(new Rocket(this))
+                projectile = new Rocket(this)
             }
+
+            console.log(projectile.Reload);
             
+            this.fire(projectile)
             this.previousState = true
+            
+            // 'Unlock the 'previousState after the reload time, during the reload previousState is true, so you can't shoot
+            setTimeout(() => {
+                this.previousState = false
+            }, projectile.Reload)
         }
 
         super.update()
@@ -103,7 +113,6 @@ export class Tank extends GameObject{
 
         if(e.key == " ")  {
             this.canFire = false
-            this.previousState = false
         }    
     }
 
