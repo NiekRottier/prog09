@@ -5,6 +5,8 @@ export abstract class GameObject{
     protected div       : HTMLElement
     protected position  : Vector = new Vector(0, 0)
     protected rotation  : number = 0
+
+    public tag          : String
     
     // Properties
     public get Position()   : Vector    { return this.position }
@@ -16,7 +18,7 @@ export abstract class GameObject{
 
     constructor(tag : string) {
         this.div = document.createElement(tag)
-
+        this.tag = tag
 
 
         let game = document.getElementsByTagName("game")[0]

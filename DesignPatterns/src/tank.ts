@@ -1,8 +1,12 @@
 import { Bullet }           from "./projectiles/bullet.js";
+import { Rocket }           from "./projectiles/rocket.js";
 import { Game }             from "./game.js";
 import { GameObject }       from "./gameobject.js";
 import { Turret }           from "./turret.js";
 import { Vector }           from "./vector.js";
+import { Projectile }       from "./projectiles/projectile.js";
+import { Missile } from "./projectiles/missile.js";
+import { BulletAmmo } from "./ammo/bulletammo.js";
 
 export class Tank extends GameObject{
     private readonly FRICTION       : number    = 0.3  
@@ -19,6 +23,8 @@ export class Tank extends GameObject{
     private game            : Game
     
     protected speed         : Vector    = new Vector(0, 0)
+
+    public ammoType         : String    = 'bullet-ammo'
 
     // Properties
     public get Speed()  : Vector { return this.speed }
@@ -66,7 +72,14 @@ export class Tank extends GameObject{
         
         // Shooting
         if(this.canFire && !this.previousState) {
-            this.fire()
+            if(this.ammoType === 'ammo-bullet'){
+                this.fire(new Bullet(this))
+            } else if(this.ammoType === 'ammo-missile'){
+                this.fire(new Missile(this))
+            } else if(this.ammoType === 'ammo-rocket'){
+                this.fire(new Rocket(this))
+            }
+            
             this.previousState = true
         }
 
@@ -94,13 +107,18 @@ export class Tank extends GameObject{
         }    
     }
 
-    private fire() {
-        this.game.gameObjects.push(new Bullet(this))
+    private fire(projectile : Projectile) {
+        this.game.gameObjects.push(projectile)
         console.log("fire")
     }
 
     onCollision(target: GameObject): void {
-        // throw new Error("Method not implemented.");
+        console.log(target.tag);
+        if (target.tag === 'ammo-bullet' || target.tag === 'ammo-missile' || target.tag === 'ammo-rocket') {
+            this.ammoType = target.tag
+        }
+        
+        
     }
 
     private keepInWindow() {
