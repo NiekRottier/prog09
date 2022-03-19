@@ -7,6 +7,8 @@ import { Vector }           from "./vector.js";
 import { Projectile }       from "./projectiles/projectile.js";
 import { Missile } from "./projectiles/missile.js";
 import { BulletAmmo } from "./ammo/bulletammo.js";
+import { RocketAmmo } from "./ammo/rocketammo.js";
+import { MissileAmmo } from "./ammo/missileammo.js";
 
 export class Tank extends GameObject{
     private readonly FRICTION       : number    = 0.3  
@@ -123,7 +125,7 @@ export class Tank extends GameObject{
 
     onCollision(target: GameObject): void {
         console.log(target.tag);
-        if (target.tag === 'ammo-bullet' || target.tag === 'ammo-missile' || target.tag === 'ammo-rocket') {
+        if (target instanceof BulletAmmo || target instanceof RocketAmmo || target instanceof MissileAmmo) {
             this.ammoType = target.tag
         }
         

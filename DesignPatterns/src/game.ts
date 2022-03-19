@@ -5,7 +5,6 @@ import { Vector }       from "./vector.js"
 import { BulletAmmo }   from "./ammo/bulletammo.js"
 import { RocketAmmo }   from "./ammo/rocketammo.js"
 import { MissileAmmo }  from "./ammo/missileammo.js"
-import { Ammunition } from "./ammo/ammunition.js"
 
 export class Game {
 

@@ -7,7 +7,7 @@ export abstract class Projectile extends GameObject{
     
     // Field 
     private damage       : number = 15
-    private speed        : number = 10
+    protected speed        : number = 10
     private parentTurret : Turret
     private direction    : Vector
     protected reload     : number = 500         // Reload in miliseconds
