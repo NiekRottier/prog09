@@ -26,7 +26,7 @@ export class Tank extends GameObject{
     
     protected speed         : Vector    = new Vector(0, 0)
 
-    public ammoType         : String    = 'ammo-bullet'
+    private ammoType         : String    = 'ammo-bullet'
 
     // Properties
     public get Speed()  : Vector { return this.speed }
