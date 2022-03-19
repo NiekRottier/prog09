@@ -10,7 +10,7 @@ export abstract class Projectile extends GameObject{
     protected speed        : number = 10
     private parentTurret : Turret
     private direction    : Vector
-    protected reload     : number = 500         // Reload in miliseconds
+    protected reload     : number               // Reload in miliseconds
 
     // Properties
     public get Damage()         : number        { return this.damage }

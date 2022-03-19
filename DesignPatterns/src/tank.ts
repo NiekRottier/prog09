@@ -76,6 +76,7 @@ export class Tank extends GameObject{
         if(this.canFire && !this.previousState) {
             let projectile
 
+            // The projectile depends on the collected ammo
             if(this.ammoType === 'ammo-bullet'){
                 projectile = new Bullet(this)
             } else if(this.ammoType === 'ammo-missile'){
@@ -83,13 +84,11 @@ export class Tank extends GameObject{
             } else if(this.ammoType === 'ammo-rocket'){
                 projectile = new Rocket(this)
             }
-
-            console.log(projectile.Reload);
             
             this.fire(projectile)
             this.previousState = true
             
-            // 'Unlock the 'previousState after the reload time, during the reload previousState is true, so you can't shoot
+            // 'Unlock' the previousState after the reload time. During the reload previousState is true, so you can't shoot
             setTimeout(() => {
                 this.previousState = false
             }, projectile.Reload)

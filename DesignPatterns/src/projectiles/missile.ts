@@ -1,6 +1,4 @@
-import { Game }         from "../game.js";
 import { Tank }         from "../tank.js";
-import { Vector }       from "../vector.js";
 import { Projectile }   from "./projectile.js";
 
 
