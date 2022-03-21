@@ -9,6 +9,8 @@ import { Missile } from "./projectiles/missile.js";
 import { BulletAmmo } from "./ammo/bulletammo.js";
 import { RocketAmmo } from "./ammo/rocketammo.js";
 import { MissileAmmo } from "./ammo/missileammo.js";
+import { BulletWeapon } from "./weapons/bulletWeapon.js";
+import { Weapon } from "./weapons/weapon.js";
 
 export class Tank extends GameObject{
     private readonly FRICTION       : number    = 0.3  
@@ -26,11 +28,13 @@ export class Tank extends GameObject{
     
     protected speed         : Vector    = new Vector(0, 0)
 
-    private ammoType         : String    = 'ammo-bullet'
+    private weapon          : Weapon
 
     // Properties
     public get Speed()  : Vector { return this.speed }
     public get Turret() : Turret { return this.turret }
+
+    public set Weapon(weapon:Weapon) { this.weapon = weapon }
     
     constructor(game:Game) {
         super("tank-body")
@@ -43,6 +47,8 @@ export class Tank extends GameObject{
         this.rotation   = 0
         
         this.turret = new Turret(this)
+
+        this.weapon = new BulletWeapon(this, this.game)
 
         window.addEventListener("keydown",  (e : KeyboardEvent) => this.handleKeyDown(e))
         window.addEventListener("keyup",    (e : KeyboardEvent) => this.handleKeyUp(e))
@@ -74,24 +80,15 @@ export class Tank extends GameObject{
         
         // Shooting
         if(this.canFire && !this.previousState) {
-            let projectile
 
-            // The projectile depends on the collected ammo
-            if(this.ammoType === 'ammo-bullet'){
-                projectile = new Bullet(this)
-            } else if(this.ammoType === 'ammo-missile'){
-                projectile = new Missile(this)
-            } else if(this.ammoType === 'ammo-rocket'){
-                projectile = new Rocket(this)
-            }
+            this.weapon.fire()
             
-            this.fire(projectile)
             this.previousState = true
             
             // 'Unlock' the previousState after the reload time. During the reload previousState is true, so you can't shoot
             setTimeout(() => {
                 this.previousState = false
-            }, projectile.Reload)
+            }, this.weapon.reload)
         }
 
         super.update()
@@ -117,18 +114,7 @@ export class Tank extends GameObject{
         }    
     }
 
-    private fire(projectile : Projectile) {
-        this.game.gameObjects.push(projectile)
-        console.log("fire")
-    }
-
     onCollision(target: GameObject): void {
-        console.log(target.tag);
-        if (target instanceof BulletAmmo || target instanceof RocketAmmo || target instanceof MissileAmmo) {
-            this.ammoType = target.tag
-        }
-        
-        
     }
 
     private keepInWindow() {

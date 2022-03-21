@@ -5,6 +5,5 @@ import { Projectile }   from "./projectile.js";
 export class Bullet extends Projectile {
     constructor(tank : Tank) {
         super("bullet", tank)
-        this.reload = 500
     }
 }
