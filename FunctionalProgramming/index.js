@@ -43,7 +43,7 @@ function hash(string) {
         let extraNumbers = []
         for (let i = 0; i < 10-strASCII.length; i++) {
             extraNumbers.push(i)
-            console.log(extraNumbers);
+            // console.log(extraNumbers);
         }
 
         // Merge strASCII and extraNumbers
@@ -53,11 +53,11 @@ function hash(string) {
         numberBlocks.push(strASCII)
     }
 
-    console.log(numberBlocks);
+    // console.log(numberBlocks);
 
     // Idk why, but the result has to be defined or it doesn't work and returns undefined
-    let result = addNumberBlocks(numberBlocks)
-    return addNumberBlocks(numberBlocks)
+    let result = sha256(addNumberBlocks(numberBlocks)) 
+    return result
 }
 
 function addNumberBlocks(numberBlocks) {
@@ -72,7 +72,7 @@ function addNumberBlocks(numberBlocks) {
 
         // Replace numberblock 1 and 2 with the new block
         numberBlocks.splice(0, 2, newNumberBlock)
-        console.log(numberBlocks);
+        // console.log(numberBlocks);
 
         // Call recursively
         addNumberBlocks(numberBlocks)
@@ -90,12 +90,33 @@ function mod10(num1, num2) {
     return answer
 }
 
-
-let hashNum = hash('Hello World! Hello World! Hello World! Fiets!')
-
-console.log(hashNum);
-
 // Fetch https://programmeren9.cmgt.hr.nl:8000/api/blockchain/next
+async function fetchBlockchain() {
+    fetch('https://programmeren9.cmgt.hr.nl:8000/api/blockchain/next')
+        .then((data) => data.json())
+        .then((json) => data = json)
+        .then((json) => console.log(json))
+}
+
+
+function searchNonce() {
+    // Fetch the chain
+    let data = fetchBlockchain()
+    console.log(data)
+
+    // let prevBlock = 
+
+
+    let hashNum = hash('Hello World! Hello World! Hello World! Fiets!')
+
+    console.log(hashNum);
+}
+
+searchNonce()
+
+
+
+
 
 // Hash the last block
 
