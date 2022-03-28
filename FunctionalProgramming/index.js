@@ -1,5 +1,5 @@
 // Hash using the mod10 algorithm
-function hash(string) {
+async function hash(string) {
     console.log('Using mod10 on: ' + string);
 
     // Remove spaces using magic
@@ -55,19 +55,20 @@ function hash(string) {
 
     // console.log(numberBlocks);
 
-    // Idk why, but the result has to be defined or it doesn't work and returns undefined
-    let result = sha256(addNumberBlocks(numberBlocks)) 
-    return result
+    result = await sha256(addNumberBlocks(numberBlocks))
+
+    console.log(result)
+    return await result
 }
 
-function addNumberBlocks(numberBlocks) {
-    let newNumberBlock = []
-
+async function addNumberBlocks(numberBlocks) {
     // If there's more than 1 numberBlock
     if (numberBlocks.length != 1) {
+        let newNumberBlock = []
+
         // Get mod10 from the addition of the first and second blocks and add it to the new block
         for (let i = 0; i < numberBlocks[0].length; i++) {
-            newNumberBlock.push(mod10(numberBlocks[0][i], numberBlocks[1][i]))
+            newNumberBlock.push(await mod10(numberBlocks[0][i], numberBlocks[1][i]))
         }
 
         // Replace numberblock 1 and 2 with the new block
@@ -77,17 +78,33 @@ function addNumberBlocks(numberBlocks) {
         // Call recursively
         addNumberBlocks(numberBlocks)
     } else {
+        console.log(numberBlocks[0].join(''));
         return numberBlocks[0].join('')
     }
 }
 
-function mod10(num1, num2) {
+async function mod10(num1, num2) {
     let answer 
     answer = (num1 + num2)
     if (answer >= 10) {
         answer = answer - 10
     }
     return answer
+}
+
+async function sha256(message) {
+    // encode as UTF-8
+    const msgBuffer = new TextEncoder().encode(message);                    
+
+    // hash the message
+    const hashBuffer = await window.crypto.subtle.digest('SHA-256', msgBuffer);
+
+    // convert ArrayBuffer to Array
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+
+    // convert bytes to hex string                  
+    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    return hashHex;
 }
 
 // Fetch https://programmeren9.cmgt.hr.nl:8000/api/blockchain/next
@@ -99,15 +116,15 @@ async function fetchBlockchain() {
 }
 
 
-function searchNonce() {
+async function searchNonce() {
     // Fetch the chain
-    let data = fetchBlockchain()
-    console.log(data)
+    // let data = fetchBlockchain()
+    // console.log(data)
 
     // let prevBlock = 
 
 
-    let hashNum = hash('Hello World! Hello World! Hello World! Fiets!')
+    let hashNum = await hash('Hello World! Hello World! Hello World! Fiets!')
 
     console.log(hashNum);
 }
