@@ -1,5 +1,5 @@
 // Hash using the mod10 algorithm
-function mod10(string) {
+function hash(string) {
     console.log('Using mod10 on: ' + string);
 
     // Remove spaces using magic
@@ -7,7 +7,7 @@ function mod10(string) {
 
     let strASCII = []
 
-    // Get the ACSII numbers of the letters and put them in strACSII
+    // Get the ASCII numbers of the letters and put them in strASCII
     for (let i = 0; i < str.length; i++) {
         let charCode = str.charCodeAt(i)
 
@@ -52,16 +52,48 @@ function mod10(string) {
         // Put the filled strASCII in numberblocks
         numberBlocks.push(strASCII)
     }
-    
-
 
     console.log(numberBlocks);
 
+    // Idk why, but the result has to be defined or it doesn't work and returns undefined
+    let result = addNumberBlocks(numberBlocks)
+    return addNumberBlocks(numberBlocks)
 }
 
-mod10('Hello World! Hello World! Hello World! Fiets!')
+function addNumberBlocks(numberBlocks) {
+    let newNumberBlock = []
+
+    // If there's more than 1 numberBlock
+    if (numberBlocks.length != 1) {
+        // Get mod10 from the addition of the first and second blocks and add it to the new block
+        for (let i = 0; i < numberBlocks[0].length; i++) {
+            newNumberBlock.push(mod10(numberBlocks[0][i], numberBlocks[1][i]))
+        }
+
+        // Replace numberblock 1 and 2 with the new block
+        numberBlocks.splice(0, 2, newNumberBlock)
+        console.log(numberBlocks);
+
+        // Call recursively
+        addNumberBlocks(numberBlocks)
+    } else {
+        return numberBlocks[0].join('')
+    }
+}
+
+function mod10(num1, num2) {
+    let answer 
+    answer = (num1 + num2)
+    if (answer >= 10) {
+        answer = answer - 10
+    }
+    return answer
+}
 
 
+let hashNum = hash('Hello World! Hello World! Hello World! Fiets!')
+
+console.log(hashNum);
 
 // Fetch https://programmeren9.cmgt.hr.nl:8000/api/blockchain/next
 
