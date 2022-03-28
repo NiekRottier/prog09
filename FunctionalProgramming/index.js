@@ -1,6 +1,6 @@
 // Hash using the mod10 algorithm
 async function hash(string) {
-    console.log('Using mod10 on: ' + string);
+    // console.log('Using mod10 on: ' + string);
 
     // Remove spaces using magic
     let str = string.replace(/\s+/g, '')
@@ -55,8 +55,9 @@ async function hash(string) {
 
     // console.log(numberBlocks);
 
-    // DO NOT REMOVE the console.log or finalNumberBlock will be undefined
-    console.log(await addNumberBlocks(numberBlocks))
+    // DO NOT REMOVE the unneededNeededVar or finalNumberBlock will be undefined
+    let unneededNeededVar = await addNumberBlocks(numberBlocks)
+
     let finalNumberBlock = await addNumberBlocks(numberBlocks)
 
     result = await sha256(finalNumberBlock)
@@ -97,7 +98,7 @@ async function mod10(num1, num2) {
 }
 
 async function sha256(message) {
-    console.log(message);
+    // console.log(message);
     // encode as UTF-8
     const msgBuffer = new TextEncoder().encode(message);                    
 
@@ -125,19 +126,43 @@ async function searchNonce() {
     // Fetch the chain
     let data = await fetchBlockchain()
 
+    // Check if the blockchain is open
     if (data.open) {
         console.log('Blockchain open')
 
         let prevBlock = data.blockchain
-        console.log(prevBlock);
+        // console.log(prevBlock)
 
-        let string = prevBlock.hash + prevBlock.data[0].from + prevBlock.data[0].to + prevBlock.data[0].amount + prevBlock.data[0].timestamp + prevBlock.timestamp + prevBlock.nonce
+        let nextBlock = data.transactions[0]
+        // console.log(nextBlock)
+
+        let prevString = prevBlock.hash + prevBlock.data[0].from + prevBlock.data[0].to + prevBlock.data[0].amount + prevBlock.data[0].timestamp + prevBlock.timestamp + prevBlock.nonce
         
-        console.log(string)
+        // console.log(prevString)
+        hashPrevString = await hash(prevString)
 
-        let hashNum = await hash(string)
+        let newString = hashPrevString + nextBlock.from + nextBlock.to + nextBlock.amount + nextBlock.timestamp + data.timestamp
 
+        console.log(newString)
+
+        let hashNum = ''
+
+        // Find the correct nonce
+        let nonce = 0
+        while (hashNum.substring(0,4) !== '0000') {
+            hashNum = await hash(newString + nonce)
+
+            nonce++
+        }
         console.log('Hash: ' + hashNum);
+
+
+        if(hashNum.substring(0,4) === '0000') {
+            console.log('You got a coin!')
+
+            // POST to the blockchain
+        } 
+
     } else {
         console.log('Blockchain closed')
     }
