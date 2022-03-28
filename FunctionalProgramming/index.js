@@ -61,7 +61,7 @@ async function hash(string) {
 
     result = await sha256(finalNumberBlock)
 
-    console.log(result)
+    // console.log(result)
     return await result
 }
 
@@ -82,7 +82,7 @@ async function addNumberBlocks(numberBlocks) {
         // Call recursively
         await addNumberBlocks(numberBlocks)
     } else {
-        console.log(numberBlocks[0].join(''));
+        // console.log(numberBlocks[0].join(''));
         return numberBlocks[0].join('')
     }
 }
@@ -114,24 +114,33 @@ async function sha256(message) {
 
 // Fetch https://programmeren9.cmgt.hr.nl:8000/api/blockchain/next
 async function fetchBlockchain() {
-    fetch('https://programmeren9.cmgt.hr.nl:8000/api/blockchain/next')
+    let data = await fetch('https://programmeren9.cmgt.hr.nl:8000/api/blockchain/next')
         .then((data) => data.json())
-        .then((json) => data = json)
-        .then((json) => console.log(json))
+
+    return data
 }
 
 
 async function searchNonce() {
     // Fetch the chain
-    // let data = fetchBlockchain()
-    // console.log(data)
+    let data = await fetchBlockchain()
 
-    // let prevBlock = 
+    if (data.open) {
+        console.log('Blockchain open')
 
+        let prevBlock = data.blockchain
+        console.log(prevBlock);
 
-    let hashNum = await hash('Hello World! Hello World! Hello World! Fiets!')
+        let string = prevBlock.hash + prevBlock.data[0].from + prevBlock.data[0].to + prevBlock.data[0].amount + prevBlock.data[0].timestamp + prevBlock.timestamp + prevBlock.nonce
+        
+        console.log(string)
 
-    console.log(hashNum);
+        let hashNum = await hash(string)
+
+        console.log('Hash: ' + hashNum);
+    } else {
+        console.log('Blockchain closed')
+    }
 }
 
 searchNonce()
