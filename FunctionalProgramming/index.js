@@ -55,7 +55,11 @@ async function hash(string) {
 
     // console.log(numberBlocks);
 
-    result = await sha256(addNumberBlocks(numberBlocks))
+    // DO NOT REMOVE the console.log or finalNumberBlock will be undefined
+    console.log(await addNumberBlocks(numberBlocks))
+    let finalNumberBlock = await addNumberBlocks(numberBlocks)
+
+    result = await sha256(finalNumberBlock)
 
     console.log(result)
     return await result
@@ -76,7 +80,7 @@ async function addNumberBlocks(numberBlocks) {
         // console.log(numberBlocks);
 
         // Call recursively
-        addNumberBlocks(numberBlocks)
+        await addNumberBlocks(numberBlocks)
     } else {
         console.log(numberBlocks[0].join(''));
         return numberBlocks[0].join('')
@@ -93,6 +97,7 @@ async function mod10(num1, num2) {
 }
 
 async function sha256(message) {
+    console.log(message);
     // encode as UTF-8
     const msgBuffer = new TextEncoder().encode(message);                    
 
