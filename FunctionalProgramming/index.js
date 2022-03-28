@@ -9,7 +9,24 @@ function mod10(string) {
 
     // Get the ACSII numbers of the letters and put them in strACSII
     for (let i = 0; i < str.length; i++) {
-        strASCII.push(str.charCodeAt(i))
+        let charCode = str.charCodeAt(i)
+
+        // If charcode has double digits split it
+        if (charCode >= 10) {
+            // Separate
+            charCode = charCode.toString().split('');
+            // Back to type Number
+            charCode = charCode.map(Number)
+            
+            // Put them in strASCII
+            charCode.forEach(number => {
+                strASCII.push(number)
+            });
+
+        } else {
+            strASCII.push(charCode)
+        }
+        
         // console.log(strASCII, str.charCodeAt(i));
     }
 
@@ -21,24 +38,28 @@ function mod10(string) {
         numberBlocks.push(strASCII.splice(0, 10))
     }
 
-    // Get extra numbers to fill strASCII to length 10
-    let extraNumbers = []
-    for (let i = 0; i < 10-strASCII.length; i++) {
-        extraNumbers.push(i)
-        console.log(extraNumbers);
+    // If strASCII has a few numbers left, get extra numbers to fill strASCII to length 10
+    if (strASCII.length != 0) {
+        let extraNumbers = []
+        for (let i = 0; i < 10-strASCII.length; i++) {
+            extraNumbers.push(i)
+            console.log(extraNumbers);
+        }
+
+        // Merge strASCII and extraNumbers
+        strASCII = strASCII.concat(extraNumbers)
+
+        // Put the filled strASCII in numberblocks
+        numberBlocks.push(strASCII)
     }
+    
 
-    // Merge strASCII and extraNumbers
-    strASCII = strASCII.concat(extraNumbers)
-
-    // Put strASCII in numberblocks
-    numberBlocks.push(strASCII)
 
     console.log(numberBlocks);
 
 }
 
-mod10('Hello World! Hello World! Hello World! Hello World! Hello World!')
+mod10('Hello World! Hello World! Hello World! Fiets!')
 
 
 
