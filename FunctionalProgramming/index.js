@@ -115,6 +115,8 @@ async function sha256(message) {
 
 // Fetch https://programmeren9.cmgt.hr.nl:8000/api/blockchain/next
 async function fetchBlockchain() {
+    // let headers = await fetch('https://programmeren9.cmgt.hr.nl:8000/api/blockchain', {method: 'OPTIONS'}).then((res) => console.log(res))
+
     let data = await fetch('https://programmeren9.cmgt.hr.nl:8000/api/blockchain/next')
         .then((data) => data.json())
 
@@ -125,6 +127,15 @@ async function fetchBlockchain() {
 async function searchNonce() {
     // Fetch the chain
     let data = await fetchBlockchain()
+    // fetch('https://programmeren9.cmgt.hr.nl:8000/api/blockchain', {
+    //             method: 'POST',
+    //             headers: {'Content-Type': 'application/json'},
+    //             body: JSON.stringify({
+    //                 'nonce': 5, 
+    //                 'name': 'Niek Rottier 0983249'
+    //             })
+    //           })
+    //           .then((res) => console.log(res))
 
     // Check if the blockchain is open
     if (data.open) {
@@ -148,20 +159,30 @@ async function searchNonce() {
         let hashNum = ''
 
         // Find the correct nonce
+        console.log('Searching for the correct nonce...');
         let nonce = 0
         while (hashNum.substring(0,4) !== '0000') {
             hashNum = await hash(newString + nonce)
 
             nonce++
         }
-        console.log('Hash: ' + hashNum);
+        console.log('Hash: ' + hashNum + ' | Nonce: ' + nonce);
 
-
+        // If the hash starts with four 0's, POST the name and nonce
         if(hashNum.substring(0,4) === '0000') {
-            console.log('You got a coin!')
+            console.log('Found the right nonce!')
 
-            // POST to the blockchain
-        } 
+            fetch('https://programmeren9.cmgt.hr.nl:8000/api/blockchain', {
+                method: 'POST',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify({nonce: nonce, user: 'Niek Rottier 0983249'})
+              })
+              .then((res) => res.json())
+              .then((json) => console.log(json))
+              .then((res) => console.log('Put the nonce in the blockchain'))
+        }
 
     } else {
         console.log('Blockchain closed')
@@ -169,17 +190,3 @@ async function searchNonce() {
 }
 
 searchNonce()
-
-
-
-
-
-// Hash the last block
-
-// Use that hash and put information of the next block behind it
-
-// Hash that string
-
-// Try nonces by putting them at the end of the string and hashinhg
-
-// If the hash has four 0's -> Send the nonce and your name via POST
