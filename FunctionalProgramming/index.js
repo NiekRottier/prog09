@@ -56,7 +56,7 @@ async function hash(string) {
     // console.log(numberBlocks);
 
     // DO NOT REMOVE the unneededNeededVar or finalNumberBlock will be undefined
-    let unneededNeededVar = await addNumberBlocks(numberBlocks)
+    // let unneededNeededVar = await addNumberBlocks(numberBlocks)
 
     let finalNumberBlock = await addNumberBlocks(numberBlocks)
 
@@ -81,7 +81,7 @@ async function addNumberBlocks(numberBlocks) {
         // console.log(numberBlocks);
 
         // Call recursively
-        await addNumberBlocks(numberBlocks)
+        return await addNumberBlocks(numberBlocks)
     } else {
         // console.log(numberBlocks[0].join(''));
         return numberBlocks[0].join('')
@@ -98,7 +98,7 @@ async function mod10(num1, num2) {
 }
 
 async function sha256(message) {
-    // console.log(message);
+    // console.log(message)
     // encode as UTF-8
     const msgBuffer = new TextEncoder().encode(message);                    
 
