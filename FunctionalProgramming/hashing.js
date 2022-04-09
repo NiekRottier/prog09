@@ -41,7 +41,7 @@ hashing.txtToASCII = (string) => {
         // console.log(strASCII, str.charCodeAt(i));
     }
 
-    console.log(strASCII);
+    // console.log(strASCII);
     return strASCII
 }
 
@@ -73,7 +73,7 @@ hashing.separateBlocks = (ASCIIArray) => {
         numberBlocks.push(ASCIIArray)
     }
 
-    console.log(numberBlocks);
+    // console.log(numberBlocks);
     return numberBlocks
 }
 
@@ -100,7 +100,7 @@ hashing.mod10 = (numberBlocks) => {
         // Call recursively
         return hashing.mod10(numberBlocks)
     } else {
-        console.log(numberBlocks[0].join(''));
+        // console.log(numberBlocks[0].join(''));
         return numberBlocks[0].join('')
     }
 }
@@ -109,8 +109,39 @@ hashing.mod10 = (numberBlocks) => {
 hashing.sha256 = (message) => {
     const hashHex = crypto.createHash('sha256').update(message).digest('hex');
 
-    console.log('Sha256 Hash: ' + hashHex)
+    // console.log('Sha256 Hash: ' + hashHex)
     return hashHex;
+}
+
+hashing.findNonce = (prevHash, generalTime, transaction, open) => {
+    let nonce = 0
+    let hash = ''
+
+    // Check if blockchain is open
+    if (open) {
+        // While it hasn't found a hash starting with 4 0's
+        while (hash.substring(0,4) !== '0000') {
+            let string = `${prevHash}${transaction.from}${transaction.to}${transaction.amount}${transaction.timestamp}${generalTime}${nonce}`
+
+            let ASCIIArray = hashing.txtToASCII(string)
+
+            let ASCIIBlocks = hashing.separateBlocks(ASCIIArray)
+
+            let mod10String = hashing.mod10(ASCIIBlocks)
+
+            hash = hashing.sha256(mod10String)
+
+            nonce++
+        }
+
+        console.log('Correct nonce: ' + nonce);
+        console.log('Correct hash: ' + hash);
+
+        return nonce
+
+    } else {
+        console.log('The blockchain is closed');
+    }
 }
 
 // Fetch the blockchain
@@ -118,7 +149,7 @@ hashing.fetchBlockchain = async () => {
     let data = await fetch('https://programmeren9.cmgt.hr.nl:8000/api/blockchain/next')
         .then((data) => data.json())
 
-    console.log(data);
+    // console.log(data);
     return data
 }
 

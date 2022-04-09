@@ -59,11 +59,13 @@ async function searchNonce() {
 // searchNonce()
 
 async function main() {
+    // Fetch the blockchain
     let data = await hashing.fetchBlockchain()
     let generalTime = data.timestamp
     let transactions = data.transactions
     let blockchain = data.blockchain
 
+    // Create the string to hash
     let transactionInfo = `${blockchain.hash}${blockchain.data[0].from}${blockchain.data[0].to}${blockchain.data[0].amount}${blockchain.data[0].timestamp}${blockchain.timestamp}${blockchain.nonce}`
 
     console.log(transactionInfo);
@@ -78,7 +80,10 @@ async function main() {
 
     console.log(sha256String);
 
-    // Check if sha256String starts with 4 zeros - While-loop? - FindCorrectNonce()?
+    // Find the next nonce
+    let nonce = hashing.findNonce(sha256String, generalTime, transactions[0], data.open)
+
+    console.log(nonce);
 }
 
 main()
