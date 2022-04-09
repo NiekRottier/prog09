@@ -14,7 +14,13 @@ hashing.txtToASCII = (string) => {
 
     // Get the ASCII numbers of the letters and put them in strASCII
     for (let i = 0; i < str.length; i++) {
-        let charCode = str.charCodeAt(i)
+        // Check if it is a number, if don't look up the ASCII
+        let charCode
+        if (isNaN(str.charAt(i))) {
+            charCode = str.charCodeAt(i)
+        } else {
+            charCode = parseInt(str.charAt(i))
+        }
 
         // If charcode has double digits split it
         if (charCode >= 10) {
