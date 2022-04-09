@@ -100,8 +100,7 @@ hashing.mod10 = (numberBlocks) => {
 }
 
 // sha256 hashing algorithm
-hashing.sha256 = async (message) => {
-    console.log(message)
+hashing.sha256 = (message) => {
     const hashHex = crypto.createHash('sha256').update(message).digest('hex');
 
     console.log('Sha256 Hash: ' + hashHex)

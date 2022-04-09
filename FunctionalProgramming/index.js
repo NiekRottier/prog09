@@ -74,7 +74,7 @@ async function main() {
 
     let mod10String = hashing.mod10(ASCIIBlocks)
 
-    // let sha256String = await hashing.sha256(mod10String)
+    let sha256String = hashing.sha256(mod10String)
 
     // console.log(sha256String);
 
