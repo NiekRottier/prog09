@@ -40,7 +40,7 @@ hashing.txtToASCII = (string) => {
 }
 
 // Separate an array in arrays of 10
-hashing.separateBlocks = async (ASCIIArray) => {
+hashing.separateBlocks = (ASCIIArray) => {
     // console.log(ASCIIArray)
     let numberBlocks = []
 

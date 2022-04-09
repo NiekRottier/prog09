@@ -59,18 +59,18 @@ async function searchNonce() {
 // searchNonce()
 
 async function main() {
-    let data = await hashing.fetchBlockchain()
-    let generalTime = data.timestamp
-    let transactions = data.transactions
-    let blockchain = data.blockchain
+    // let data = await hashing.fetchBlockchain()
+    // let generalTime = data.timestamp
+    // let transactions = data.transactions
+    // let blockchain = data.blockchain
 
-    let transactionInfo = `${blockchain.hash}${blockchain.data[0].from}${blockchain.data[0].to}${blockchain.data[0].amount}${blockchain.data[0].timestamp}${blockchain.timestamp}${blockchain.nonce}`
+    // let transactionInfo = `${blockchain.hash}${blockchain.data[0].from}${blockchain.data[0].to}${blockchain.data[0].amount}${blockchain.data[0].timestamp}${blockchain.timestamp}${blockchain.nonce}`
 
-    console.log(transactionInfo);
+    // console.log(transactionInfo);
 
-    let ASCIIArray = hashing.txtToASCII('Hello World!')
+    let ASCIIArray = hashing.txtToASCII('Hello Worldy!')
 
-    // let ASCIIBlocks = await hashing.separateBlocks(ASCIIArray)
+    let ASCIIBlocks = hashing.separateBlocks(ASCIIArray)
 
     // let mod10String = await hashing.mod10(ASCIIBlocks)
 
