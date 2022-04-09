@@ -72,7 +72,7 @@ async function main() {
 
     let ASCIIBlocks = hashing.separateBlocks(ASCIIArray)
 
-    // let mod10String = await hashing.mod10(ASCIIBlocks)
+    let mod10String = hashing.mod10(ASCIIBlocks)
 
     // let sha256String = await hashing.sha256(mod10String)
 

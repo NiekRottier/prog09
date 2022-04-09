@@ -12,11 +12,9 @@ describe('Convert string to ASCII array', () => {
     })
 })
 
-let ASCIIArray = hashing.txtToASCII('Hello Worldy!')
-
 describe('Split arrays in arrays with length 10', () => {
     it('Should return an array with 4 number arrays', () => {
-        expect(hashing.separateBlocks(ASCIIArray)).to.eql([
+        expect(hashing.separateBlocks(hashing.txtToASCII('Hello Worldy!'))).to.eql([
                 [
                     7, 2, 1, 0, 1,
                     1, 0, 8, 1, 0
@@ -34,5 +32,12 @@ describe('Split arrays in arrays with length 10', () => {
                     2, 3, 4, 5, 6
                 ]
             ])
+    })
+})
+
+describe('Use mod10 to add number arrays', () => {
+    it('Should return 7061814389', () => {
+        expect(hashing.mod10(hashing.separateBlocks(hashing.txtToASCII('Hello Worldy!'))))
+            .to.eql('7061814389')
     })
 })

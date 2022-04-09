@@ -72,7 +72,7 @@ hashing.separateBlocks = (ASCIIArray) => {
 }
 
 // mod10 hashing algorithm
-hashing.mod10 = async (numberBlocks) => {
+hashing.mod10 = (numberBlocks) => {
     // If there's more than 1 numberBlock
     if (numberBlocks.length != 1) {
         let newNumberBlock = []
@@ -92,7 +92,7 @@ hashing.mod10 = async (numberBlocks) => {
         // console.log(numberBlocks);
 
         // Call recursively
-        return await mod10(numberBlocks)
+        return hashing.mod10(numberBlocks)
     } else {
         console.log(numberBlocks[0].join(''));
         return numberBlocks[0].join('')
