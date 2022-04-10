@@ -1,3 +1,4 @@
+import fetch from "node-fetch";
 import hashing from './hashing.js'
 
 async function searchNonce() {
@@ -84,6 +85,20 @@ async function main() {
     let nonce = hashing.findNonce(sha256String, generalTime, transactions[0], data.open)
 
     console.log(nonce);
+
+    // Put the nonce and name into the blockchain
+    fetch('https://programmeren9.cmgt.hr.nl:8000/api/blockchain', {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify({nonce: nonce, user: 'Niek Rottier 0983249'})
+        })
+        .then((res) => res.json())
+        .then((json) => {
+            console.log(json)
+            console.log('Put the nonce in the blockchain')
+        })
 }
 
 main()
