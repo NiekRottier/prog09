@@ -113,35 +113,33 @@ hashing.sha256 = (message) => {
     return hashHex;
 }
 
-hashing.findNonce = (prevHash, generalTime, transaction, open) => {
-    let nonce = 0
+hashing.findNonce = (prevHash, generalTime, transaction) => {
+    let nonce = -1
     let hash = ''
 
-    // Check if blockchain is open
-    if (open) {
-        // While it hasn't found a hash starting with 4 0's
-        while (hash.substring(0,4) !== '0000') {
-            let string = `${prevHash}${transaction.from}${transaction.to}${transaction.amount}${transaction.timestamp}${generalTime}${nonce}`
+    let string = `${prevHash}${transaction.from}${transaction.to}${transaction.amount}${transaction.timestamp}${generalTime}${nonce}`
+    console.log(string);
 
-            let ASCIIArray = hashing.txtToASCII(string)
+    // While it hasn't found a hash starting with 4 0's
+    while (hash.substring(0,4) !== '0000') {
+        nonce++
 
-            let ASCIIBlocks = hashing.separateBlocks(ASCIIArray)
+        let string = `${prevHash}${transaction.from}${transaction.to}${transaction.amount}${transaction.timestamp}${generalTime}${nonce}`
 
-            let mod10String = hashing.mod10(ASCIIBlocks)
+        let ASCIIArray = hashing.txtToASCII(string)
 
-            hash = hashing.sha256(mod10String)
+        let ASCIIBlocks = hashing.separateBlocks(ASCIIArray)
 
-            nonce++
-        }
+        let mod10String = hashing.mod10(ASCIIBlocks)
 
-        console.log('Correct nonce: ' + nonce);
-        console.log('Correct hash: ' + hash);
-
-        return nonce
-
-    } else {
-        console.log('The blockchain is closed');
+        hash = hashing.sha256(mod10String)
     }
+
+    console.log('Correct nonce: ' + nonce);
+    console.log('Correct string: ' + string);
+    console.log('Correct hash: ' + hash);
+
+    return nonce
 }
 
 // Fetch the blockchain
