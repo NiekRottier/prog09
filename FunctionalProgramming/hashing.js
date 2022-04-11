@@ -80,20 +80,15 @@ hashing.separateBlocks = (ASCIIArray) => {
 // mod10 hashing algorithm
 hashing.mod10 = (numberBlocks) => {
     // If there's more than 1 numberBlock
-    if (numberBlocks.length != 1) {
-        let newNumberBlock = []
+    if (numberBlocks.length > 1) {
 
-        // Get mod10 from the addition of the first and second blocks and add it to the new block
-        for (let i = 0; i < numberBlocks[0].length; i++) {
-            let answer = (numberBlocks[0][i] + numberBlocks[1][i])
-            if (answer >= 10) {
-                answer = answer - 10
-            }
+        // Add the first 2 numberBlocks
+        let newNumberBlock = hashing.addNumberBlocks(numberBlocks.slice(0,2))
+        // console.log('Block 1 : ' + numberBlocks[0]);
+        // console.log('Block 2 : ' + numberBlocks[1]);
+        // console.log('New block: ' + newNumberBlock);
 
-            newNumberBlock.push(answer)
-        }
-
-        // Replace numberblock 1 and 2 with the new block
+        // Replace the first 2 numberBlocks with the new block
         numberBlocks.splice(0, 2, newNumberBlock)
         // console.log(numberBlocks);
 
@@ -103,6 +98,23 @@ hashing.mod10 = (numberBlocks) => {
         // console.log(numberBlocks[0].join(''));
         return numberBlocks[0].join('')
     }
+}
+
+hashing.addNumberBlocks = (numberBlocks, newNumberBlock = [], index = 0) => {
+    // Exit: When the blocks are empty
+    if (index === numberBlocks[0].length) return newNumberBlock 
+
+    // Add the first numbers of the blocks
+    let answer = (numberBlocks[0][index] + numberBlocks[1][index]) % 10
+
+    // Add the result to newNumberBlock
+    newNumberBlock.push(answer)
+
+    // Move to the next numbers
+    index++
+
+    // Call recursively
+    return hashing.addNumberBlocks(numberBlocks, newNumberBlock, index)
 }
 
 // sha256 hashing algorithm
@@ -116,6 +128,8 @@ hashing.sha256 = (message) => {
 hashing.findNonce = (prevHash, generalTime, transaction) => {
     let nonce = -1
     let hash = ''
+
+    // console.log(prevHash);
 
     let string = `${prevHash}${transaction.from}${transaction.to}${transaction.amount}${transaction.timestamp}${generalTime}${nonce}`
     console.log(string);
